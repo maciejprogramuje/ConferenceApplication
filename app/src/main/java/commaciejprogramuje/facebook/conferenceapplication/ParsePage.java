@@ -13,6 +13,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 
 import static commaciejprogramuje.facebook.conferenceapplication.MainActivity.INPUT_FILE_URL;
 
@@ -84,6 +85,7 @@ public class ParsePage extends AsyncTask<String, Void, ArrayList<OneMeeting>> {
                     Calendar oneMeetingCallendar = Utils.initCallendarByString(tempDtEnd);
                     if (oneMeetingCallendar.after(actualCalendar)) {
                         tempArr.add(new OneMeeting(tempSummary, tempDtStart, tempDtEnd, tempDtStamp));
+                        Collections.sort(tempArr);
                     }
                 }
             }

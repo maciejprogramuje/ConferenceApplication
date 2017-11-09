@@ -21,6 +21,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <receiver
+            android:name="commaciejprogramuje.facebook.conferenceapplication.RefreshFile"
+            android:process=":remote" />
     </application>
 
 </manifest>

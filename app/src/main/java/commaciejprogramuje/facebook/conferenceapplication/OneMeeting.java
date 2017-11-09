@@ -1,10 +1,14 @@
 package commaciejprogramuje.facebook.conferenceapplication;
 
+import android.support.annotation.NonNull;
+
+import java.util.Comparator;
+
 /**
  * Created by m.szymczyk on 2017-11-08.
  */
 
-public class OneMeeting {
+public class OneMeeting implements Comparable<OneMeeting> {
     private String summary;
     private String startDate;
     private String endDate;
@@ -14,6 +18,11 @@ public class OneMeeting {
         this.startDate = startDate;
         this.endDate = endDate;
         this.reservationDate = reservationDate;
+    }
+
+    @Override
+    public int compareTo(@NonNull OneMeeting oneMeeting) {
+        return startDate.compareTo(oneMeeting.startDate);
     }
 
     public String getReservationDate() {
