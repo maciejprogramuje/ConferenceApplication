@@ -11,12 +11,11 @@ import android.view.MenuItem;
 import android.view.View;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity {
     public static final String INPUT_FILE_URL = "https://poczta.pb.pl/home/sala_akwarium@pb.pl/Calendar/";
 
-    private ArrayList<OneMeeting> meetingsArr = new ArrayList<>();
+    public static ArrayList<OneMeeting> meetingsArr = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +32,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String getFilesDir = getFilesDir().getAbsolutePath();
-                ParsePage parsePage = new ParsePage(new ParsePage.OnTaskCompleted() {
+                ParsePage parsePage = new ParsePage(new ParsePage.OnTaskCompletedListener() {
                     @Override
-                    public void onTaskCompleted(ArrayList<OneMeeting> arrayList) {
+                    public void onTaskCompletedListener(ArrayList<OneMeeting> arrayList) {
                         meetingsArr = arrayList;
                         for (OneMeeting o : meetingsArr) {
                             Log.w("UWAGA", o.getSummary() + ", " + o.getStartDate() + ", " + o.getEndDate() + ", " + o.getReservationDate());
@@ -77,5 +76,4 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 }

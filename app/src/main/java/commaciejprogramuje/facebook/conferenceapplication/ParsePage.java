@@ -21,9 +21,9 @@ import static commaciejprogramuje.facebook.conferenceapplication.MainActivity.IN
  */
 
 public class ParsePage extends AsyncTask<String, Void, ArrayList<OneMeeting>> {
-    public OnTaskCompleted listener = null;
+    public OnTaskCompletedListener listener = null;
 
-    public ParsePage(OnTaskCompleted listener) {
+    public ParsePage(OnTaskCompletedListener listener) {
         this.listener = listener;
     }
 
@@ -95,10 +95,10 @@ public class ParsePage extends AsyncTask<String, Void, ArrayList<OneMeeting>> {
 
     @Override
     protected void onPostExecute(ArrayList<OneMeeting> oneMeetings) {
-        listener.onTaskCompleted(oneMeetings);
+        listener.onTaskCompletedListener(oneMeetings);
     }
 
-    public interface OnTaskCompleted {
-        void onTaskCompleted(ArrayList<OneMeeting> arrayList);
+    public interface OnTaskCompletedListener {
+        void onTaskCompletedListener(ArrayList<OneMeeting> arrayList);
     }
 }
