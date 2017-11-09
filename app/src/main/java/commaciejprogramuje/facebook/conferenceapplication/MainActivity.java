@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutionException;
 public class MainActivity extends AppCompatActivity {
     public static final String INPUT_FILE_URL = "https://poczta.pb.pl/home/sala_akwarium@pb.pl/Calendar/";
 
-    public static ArrayList<OneMeeting> meetingsArr = new ArrayList<>();
+    private ArrayList<OneMeeting> meetingsArr = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,20 +33,21 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String getFilesDir = getFilesDir().getAbsolutePath();
-                ParsePage parsePage = new ParsePage();
+                ParsePage parsePage = new ParsePage(new ParsePage.OnTaskCompleted() {
+                    @Override
+                    public void onTaskCompleted(ArrayList<OneMeeting> arrayList) {
+                        meetingsArr = arrayList;
+                        for (OneMeeting o : meetingsArr) {
+                            Log.w("UWAGA", o.getSummary() + ", " + o.getStartDate() + ", " + o.getEndDate() + ", " + o.getReservationDate());
+                        }
+                    }
+                });
                 parsePage.execute(getFilesDir);
 
-                try {
-                    meetingsArr = parsePage.get();
-                } catch (InterruptedException | ExecutionException e) {
-                    e.printStackTrace();
-                }
             }
         });
 
-        for (OneMeeting o : meetingsArr) {
-            Log.w("UWAGA", o.getSummary() + ", " + o.getStartDate() + ", " + o.getEndDate() + ", " + o.getReservationDate());
-        }
+
 
         /*Intent alarmIntent = new Intent(this, RefreshFile.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -76,6 +77,5 @@ public class MainActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 
 }

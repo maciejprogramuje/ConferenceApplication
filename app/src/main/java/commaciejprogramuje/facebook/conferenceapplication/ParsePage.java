@@ -21,6 +21,12 @@ import static commaciejprogramuje.facebook.conferenceapplication.MainActivity.IN
  */
 
 public class ParsePage extends AsyncTask<String, Void, ArrayList<OneMeeting>> {
+    public OnTaskCompleted listener = null;
+
+    public ParsePage(OnTaskCompleted listener) {
+        this.listener = listener;
+    }
+
     @Override
     protected ArrayList<OneMeeting> doInBackground(String... strings) {
         Log.w("UWAGA", "parsuję...");
@@ -89,6 +95,10 @@ public class ParsePage extends AsyncTask<String, Void, ArrayList<OneMeeting>> {
 
     @Override
     protected void onPostExecute(ArrayList<OneMeeting> oneMeetings) {
-        super.onPostExecute(oneMeetings);
+        listener.onTaskCompleted(oneMeetings);
+    }
+
+    public interface OnTaskCompleted {
+        void onTaskCompleted(ArrayList<OneMeeting> arrayList);
     }
 }
