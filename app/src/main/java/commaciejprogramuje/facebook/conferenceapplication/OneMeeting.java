@@ -2,6 +2,7 @@ package commaciejprogramuje.facebook.conferenceapplication;
 
 import android.support.annotation.NonNull;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**

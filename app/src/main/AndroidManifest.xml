@@ -23,7 +23,7 @@
         </activity>
 
         <receiver
-            android:name="commaciejprogramuje.facebook.conferenceapplication.RefreshFile"
+            android:name="commaciejprogramuje.facebook.conferenceapplication.MainActivity$RefreshFile"
             android:process=":remote" />
     </application>
 

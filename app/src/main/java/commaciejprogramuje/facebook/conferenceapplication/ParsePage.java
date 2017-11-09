@@ -73,6 +73,7 @@ public class ParsePage extends AsyncTask<String, Void, ArrayList<OneMeeting>> {
             String tempDtEnd = "";
             String tempDtStamp = "";
             while ((line = br.readLine()) != null) {
+                //Log.w("UWAGA", "ilne: " + line);
                 if (line.contains("SUMMARY")) {
                     tempSummary = line.replace("SUMMARY:", "");
                 } else if (line.contains("DTSTART")) {
