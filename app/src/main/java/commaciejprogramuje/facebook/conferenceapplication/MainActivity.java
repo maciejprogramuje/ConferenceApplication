@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.StrictMode;
 import android.support.design.widget.FloatingActionButton;
@@ -25,12 +26,12 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     public static final String INPUT_FILE_URL = "https://poczta.pb.pl/home/sala_akwarium@pb.pl/Calendar/";
-    public static final String MEETINGS_KEY = "meetingsArr";
 
     private RecyclerView recyclerView;
     private String getFilesDir;
     private ArrayList<OneMeeting> meetingsArr = new ArrayList<>();
-
+    private BroadcastReceiver receiver;
+    private RefreshFile refreshFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,8 +61,6 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onTaskCompletedListener(ArrayList<OneMeeting> parsingResultArr) {
                         meetingsArr = parsingResultArr;
-                        // o 9.00 zmiana
-                        //recyclerView.getAdapter().notifyDataSetChanged();
                         recyclerView.setAdapter(new MyAdapter(meetingsArr, recyclerView));
                     }
                 });
@@ -69,11 +68,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Intent alarmIntent = new Intent();
-        alarmIntent.setClassName(this, "RefreshFile");
+        Intent alarmIntent = new Intent("commaciejprogramuje.facebook.conferenceapplication.MainActivity$RefreshFile");
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 111, alarmIntent, 0);
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000 * 60 * 2, pendingIntent);
+        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 1000 * 60 * 5, pendingIntent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        refreshFile = new RefreshFile();
+        IntentFilter filter = new IntentFilter("commaciejprogramuje.facebook.conferenceapplication.MainActivity$RefreshFile");
+        this.registerReceiver(refreshFile, filter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(refreshFile);
     }
 
     private class RefreshFile extends BroadcastReceiver {
@@ -85,15 +97,12 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onTaskCompletedListener(ArrayList<OneMeeting> parsingResultArr) {
                     meetingsArr = parsingResultArr;
-                    // o 9.00 zmiana
-                    //recyclerView.getAdapter().notifyDataSetChanged();
                     recyclerView.setAdapter(new MyAdapter(meetingsArr, recyclerView));
                 }
             });
             refreshParsingPage.execute(getFilesDir);
         }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
